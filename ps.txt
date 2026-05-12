@@ -1,0 +1,11 @@
+performance-marketing-dashboard/
+├── backend/
+│   ├── app/
+│   │   ├── __init__.py
+│   │   ├── main.py                # Updated: Pure Semrush routes
+│   │   ├── config.py              # Updated: Single variable validation
+│   │   └── services/              
+│   │       ├── __init__.py
+│   │       └── semrush.py         # Semrush SEO history fetcher
+│   ├── requirements.txt           # Clean dependencies
+│   └── .env                       # Strictly 1 line

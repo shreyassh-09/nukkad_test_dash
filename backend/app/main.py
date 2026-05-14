@@ -1,8 +1,13 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-from app.services.semrush import fetch_domain_rank_history
+from app.services.semrush import (
+    get_keywords_graph_data,
+    get_traffic_dashboard_data,
+    get_top_pages_data,
+    get_position_changes_data
+)
 
-app = FastAPI(title="SEO Performance Dashboard API")
+app = FastAPI(title="GoNukkad Dashboard")
 
 app.add_middleware(
     CORSMiddleware,
@@ -11,13 +16,18 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-@app.get("/api/dashboard/seo-history")
-def get_seo_history(domain: str = "gonukkad.com", limit: int = 12, refresh: bool = False):
+@app.get("/api/dashboard/pipeline")
+def get_master_pipeline():
     try:
-        # Force a live pull by passing refresh=True from the frontend
-        use_cache = not refresh
-        data = fetch_domain_rank_history(domain=domain, limit=limit, use_cache=use_cache)
-        return {"status": "success", "data": data}
+        return {
+            "status": "success",
+            "data": {
+                "keywords": get_keywords_graph_data(),
+                "traffic": get_traffic_dashboard_data(),
+                "pages": get_top_pages_data(),
+                "positions": get_position_changes_data()
+            }
+        }
     except Exception as e:
         return {"status": "error", "message": str(e)}
 
